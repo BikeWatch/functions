@@ -1,10 +1,29 @@
+const { arrayIntegrity, keyIntegrity } = require("./validation")
+
 module.exports = async function (context, req) {
     context.log('HTTP function "StoreTelemetric" triggered!');
-    const neededKeys = ['roll', 'pitch', 'lat', 'long', 'alt', 'date', 'time']
+    const neededKeys = ['roll', 'pitch', 'lat', 'long', 'alt', 'date', 'time', 'uuid']
     try {
         const telemetric = req.body;
         arrayIntegrity(telemetric)
         keyIntegrity(telemetric, neededKeys)
+        
+        let i = 0
+        telemetric.forEach(entry => {
+            context.bindings.outputDocument = JSON.stringify(entry)
+            i++
+        });
+
+        const successMsg = `Successfully created ${i} entries`
+        console.log(successMsg)
+        context.res = {
+            status: 201,
+            body: {
+                code: 201,
+                keyword: "Entities created",
+                message: successMsg
+            }
+        }
 
     } catch (err) {
         context.res = {
@@ -19,40 +38,7 @@ module.exports = async function (context, req) {
     }
 }
 
-function generateError(statusCode = 500, keyword= "Internal Server Error", msg = "Internal Server Error", errorbag) {
-    let err = new Error(msg)
-    err.code = statusCode
-    err.keyword = keyword
-    if (errorbag) { err.bag = errorbag }
-    return err
-}
 
-function arrayIntegrity(target) {
-    if (!Array.isArray(target)) { throw generateError(400, "Bad request", "The given body is not an array") }
-}
 
-function keyIntegrity(target, neededKeys) {
-    let i = 0
-    let errorBag = []
-
-    target.every(entry => {
-        i++
-        neededKeys.forEach(key => {
-            if (!Object.keys(entry).includes(key)) {
-                errorBag.push({ seq: i, key: `${key}` })
-            }
-        })
-    })
-
-    if (errorBag.length > 0) {
-        throw generateError(400, "Bad Request", "Some keys are missing", formatErrorBag(errorBag))
-    }
-
-    function formatErrorBag(errorbag) {
-        let bag = []
-        errorbag.forEach(error => bag.push(`At entry ${error.seq}, the key '${error.key}' is missing`))
-        return bag
-    }
-}
 
 
