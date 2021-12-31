@@ -1,5 +1,5 @@
 module.exports = {
-    generateError: (statusCode = 500, keyword = "Internal Server Error", msg = "Internal Server Error", errorbag) => {
+    generateError: (statusCode = 500, keyword = "Internal Function Error", msg = "Internal Server Error", errorbag) => {
         let err = new Error(msg)
         err.code = statusCode
         err.keyword = keyword
