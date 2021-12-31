@@ -19,7 +19,7 @@
       "type": "cosmosDB",
       "direction": "out",
       "name": "outputDocument",
-      "databaseName": "telematics",
+      "databaseName": "telemetric",
       "collectionName": "iot",
       "createIfNotExists": false,
       "connectionStringSetting": "COSMOS_CONNECTION_URI"
