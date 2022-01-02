@@ -1,0 +1,170 @@
+openapi: 3.0.1
+info:
+  title: BikeLess
+  description: BikeLess is the Serverless function platform, powering BikeWatch. The concoction of Azure Functions, Cosmos DB and JavaScript result in a high-performance & scalable Serverless API.
+  version: 1.0.0
+externalDocs:
+  description: Find out more about BikeWatch
+  url: https://git.ti.howest.be/TI/2021-2022/s5/cloud-and-internet-of-things/projects/group-10
+servers:
+- url: https://localhost:7071/api
+- url: https://bikewatch-functions.azurewebsites.net/api
+tags:
+- name: Data-In
+  description: All endpoints relating to consuming & editing data
+- name: Data-Out
+  description: All endpoints relating to reading data
+paths:
+  /StoreTelemetric:
+    post:
+      tags:
+      - Data-In
+      summary: Upload Telemetric data
+      operationId: telemetricIn
+      requestBody:
+        $ref: "#/components/requestBodies/TelemetricIn"
+      responses:
+        201:
+          $ref: "#/components/responses/Created"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        
+
+components:
+  requestBodies:
+    TelemetricIn:
+      description: An object, consisting of the UUID of the RFID/NFC card & an array with telemetric data entries.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uuid:
+                $ref: "#/components/schemas/UUID"
+              telemetric:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Telemetric"
+  schemas:
+    # Composed schemas
+    Telemetric:
+      description: A object containing several telemetric data units retrieved from the BikeWatch IoT device
+      type: object
+      properties:
+        speed:
+          $ref: "#/components/schemas/Speed"
+        roll:
+          $ref: "#/components/schemas/Roll"
+        pitch:
+          $ref: "#/components/schemas/Pitch"
+        lat:
+          $ref: "#/components/schemas/Latitude"
+        long:
+          $ref: "#/components/schemas/Longitude"
+        alt:
+          $ref: "#/components/schemas/Altitude"
+        date:
+          $ref: "#/components/schemas/Date"
+        time:
+          $ref: "#/components/schemas/Time"
+    SuccessResponse:
+      description: The standard response body received when a call is successfully executed
+      type: object
+      properties:
+        code:
+          type: number
+          format: integer
+        keyword:
+          type: string
+        message:
+          type: string
+    FailureResponse:
+      description: The standard body received when a call isn't able to be executed
+      type: object
+      properties:
+        code:
+          type: number
+          format: integer
+        keyword:
+          type: string
+        message:
+          type: string
+        bag:
+          type: array
+          items:
+            type: string
+  
+    # Atomic schemas
+    UUID:
+      description: An unique identifier, used by RFID/NFC cards. Needed in order to authenticate & associate telemetric data.
+      type: string
+      format: uuid
+      pattern: "[0-9A-Za-z]{2}-[0-9A-Za-z]{2}-[0-9A-Za-z]{2}-[0-9A-Za-z]{2}"
+      example: "bc-87-72-17"
+    Speed:
+      description: The speed of the device, measured in KM/H.
+      type: number
+      format: float
+      example: 20.2
+    Roll:
+      description: The roll of the device, measured in degrees.
+      type: number
+      format: int32
+      example: 5
+    Latitude:
+      description: The latitude of the device, as used in the **projected coordinate reference system (PCRS)**.
+      type: number
+      format: float
+      example: 50.956378
+    Longitude:
+      description: The longitude of the device, as used in the **projected coordinate reference system (PCRS)**.
+      type: number
+      format: float
+      example: 2.884949
+    Altitude:
+      description: The altitude of the device, as used in the **projected coordinate reference system (PCRS)**.
+      type: number
+      format: float
+      example: 8.20
+    Date:
+      description: A date *(I'll be quite honest, I don't really know what you want me to write here)*
+      type: string
+      pattern: '^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$'
+      example: "12/28/2021"
+    Time:
+      description: A time, formatted in the ISO format.
+      type: string
+      format: time
+      pattern: '^([01][0-9]|2[0-4])([^0-9]?([0-5][0-9]))?([^0-9]?([0-5][0-9]))?(\.([0-9]{1,6}))?$'
+      example: "11:14:09.00"
+    Pitch:
+      description: The pitch of the device, measured in degrees.
+      type: number
+      format: int32
+      example: 3
+    
+  responses:
+    Created:
+      description: Entity/Entities have been created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SuccessResponse"
+          example:
+            code: 201
+            keyword: "Created"
+            message: "16 entities have been successfully inserted"
+    BadRequest:
+      description: The body is wrongly formatted.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/FailureResponse"
+          example:
+            code: 400
+            keyword: "Bad Request"
+            message: "Some keys are missing"
+            bag:
+              - "At entry 1, the key 'date' is missing"
+              - "At entry 2, the key 'alt' is missing"
