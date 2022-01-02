@@ -8,14 +8,9 @@ module.exports = async function (context, req) {
     try {
         inputValidation(req.body)
         const data = new Telemetric(req.body.uuid, req.body.telemetric)
-        
-        let i = 0
-        data.telemetric.forEach(entry => {
-            context.bindings.outputDocument = JSON.stringify(entry)
-            i++
-        });
+        context.bindings.outputDocument = JSON.stringify(data.telemetric)
 
-        const successMsg = `Successfully created ${i} entries`
+        const successMsg = `Successfully created ${data.telemetric.length} entries`
         context.log(successMsg)
         context.res = {
             status: 201,
@@ -28,7 +23,7 @@ module.exports = async function (context, req) {
 
     } catch (err) {
         context.res = {
-            status: err.code,
+            status: err.code || 500,
             body: {
                 code: err.code,
                 keyword: err.keyword,

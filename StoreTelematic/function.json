@@ -21,7 +21,7 @@
       "databaseName": "telemetric",
       "collectionName": "{uuid}",
       "createIfNotExists": true,
-      "partitionKey": "id",
+      "partitionKey": "/itemID",
       "connectionStringSetting": "COSMOS_CONNECTION_URI"
     }
   ]
