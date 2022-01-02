@@ -43,7 +43,9 @@ components:
               uuid:
                 $ref: "#/components/schemas/UUID"
               telemetric:
-                $ref: "#/components/schemas/Telemetric"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Telemetric"
   schemas:
     # Composed schemas
     Telemetric:
