@@ -27,7 +27,7 @@ paths:
         201:
           $ref: "#/components/responses/Created"
         400:
-          $ref: "#/components/responses/BadRequest"
+          $ref: "#/components/responses/BadRequestBag"
         500:
           $ref: "#/components/responses/InternalServerError"
   /Angle/{mode}:
@@ -117,10 +117,32 @@ components:
           type: string
         message:
           type: string
+      example:
+        code: 400
+        keyword: "Bad Request"
+        message: "One or multiple of the required parameters are missing: uuid, from, to"
+    FailureResponseBag:
+      description: The standard body received when a call isn't able to be executed
+      type: object
+      properties:
+        code:
+          type: number
+          format: integer
+        keyword:
+          type: string
+        message:
+          type: string
         bag:
           type: array
           items:
             type: string
+      example:
+        code: 400
+        keyword: "Bad Request"
+        message: "Some keys are missing"
+        bag:
+          - "At entry 1, the key 'date' is missing"
+          - "At entry 2, the key 'alt' is missing"
     DataIntegerResponse:
       description: The standard body received when a call returns a simple integer data type
       type: number
@@ -196,24 +218,24 @@ components:
             keyword: "Created"
             message: "16 entities have been successfully inserted"
     BadRequest:
-      description: The body is wrongly formatted.
+      description: The request is badly formatted.
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/FailureResponse"
-          example:
-            code: 400
-            keyword: "Bad Request"
-            message: "Some keys are missing"
-            bag:
-              - "At entry 1, the key 'date' is missing"
-              - "At entry 2, the key 'alt' is missing"
+    BadRequestBag:
+      description: The request is wrongly formatted.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/FailureResponseBag"
+          
     PreconditionFailed:
       description: "A precondition has failed. \n *This is probably referring to given parameters that results in non-feasible calculations*" 
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/FailureResponse"
+            $ref: "#/components/schemas/FailureResponseBag"
           example:
             code: 412
             keyword: "Precondition Failed"
