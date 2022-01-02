@@ -2,7 +2,7 @@ const { arrayIntegrity, keyIntegrity } = require("./validation")
 
 module.exports = async function (context, req) {
     context.log('HTTP function "StoreTelemetric" triggered!');
-    const neededKeys = ['roll', 'pitch', 'lat', 'long', 'alt', 'date', 'time', 'uuid']
+    const neededKeys = ['roll', 'pitch', 'lat', 'long', 'alt', 'date', 'time', 'speed']
     try {
         const telemetric = req.body;
         arrayIntegrity(telemetric)
