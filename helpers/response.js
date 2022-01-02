@@ -17,5 +17,12 @@ module.exports = {
                     }
             )
         }
+    },
+
+    generateDataResponse: (status, data) => { 
+        return {
+            status: status,
+            body: data
+        }
     }
 }
