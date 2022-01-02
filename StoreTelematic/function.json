@@ -6,7 +6,6 @@
       "direction": "in",
       "name": "req",
       "methods": [
-        "get",
         "post"
       ]
     },
@@ -20,8 +19,9 @@
       "direction": "out",
       "name": "outputDocument",
       "databaseName": "telemetric",
-      "collectionName": "iot",
-      "createIfNotExists": false,
+      "collectionName": "{uuid}",
+      "createIfNotExists": true,
+      "partitionKey": "id",
       "connectionStringSetting": "COSMOS_CONNECTION_URI"
     }
   ]

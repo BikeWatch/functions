@@ -1,21 +1,24 @@
-const { arrayIntegrity, keyIntegrity } = require("./validation")
+const { generateError } = require("../helpers/error");
+const Telemetric = require("./models");
+const { arrayIntegrity, keyIntegrity } = require("../helpers/validation")
 
 module.exports = async function (context, req) {
     context.log('HTTP function "StoreTelemetric" triggered!');
-    const neededKeys = ['roll', 'pitch', 'lat', 'long', 'alt', 'date', 'time', 'speed']
     try {
-        const telemetric = req.body;
-        arrayIntegrity(telemetric)
-        keyIntegrity(telemetric, neededKeys)
+        if (!req.body.uuid || !req.body.telemetric) { 
+            throw generateError("400", "Bad Request", "Some keys are missing from the Request Body! Please validate the request body.")
+        }
+        const data = new Telemetric(req.body.uuid, req.body.telemetric)
+
         
         let i = 0
-        telemetric.forEach(entry => {
+        data.telemetric.forEach(entry => {
             context.bindings.outputDocument = JSON.stringify(entry)
             i++
         });
 
         const successMsg = `Successfully created ${i} entries`
-        console.log(successMsg)
+        context.log(successMsg)
         context.res = {
             status: 201,
             body: {
@@ -37,8 +40,3 @@ module.exports = async function (context, req) {
         }
     }
 }
-
-
-
-
-
