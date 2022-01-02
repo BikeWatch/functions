@@ -14,7 +14,6 @@ module.exports = async function (context, req) {
         const successMsg = `Successfully created ${data.telemetric.length} entries`
         context.log(successMsg)
         context.res = generateResponse(201, "Entities created", `${data.telemetric.length} have been inserted`)
-
     } catch (err) {
         context.res = generateResponse(err.status, err.keyword, err.message, err.bag)
     }
@@ -22,7 +21,7 @@ module.exports = async function (context, req) {
 
 function inputValidation(body) { 
     const neededKeys = ['roll', 'pitch', 'lat', 'long', 'alt', 'date', 'time', 'speed']
-    
+
     if (!body.uuid || !body.telemetric) {
         throw generateError("400", "Bad Request", "Some keys are missing from the Request Body! Please validate the request body.")
     }
