@@ -1,4 +1,4 @@
-const { generateError } = require("./error") 
+const { generateError } = require("./errorGenerator") 
 
 module.exports = {
     arrayIntegrity: (target) => {
