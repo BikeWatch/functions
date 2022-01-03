@@ -52,7 +52,7 @@ paths:
           412:
             $ref: "#/components/responses/PreconditionFailed"
           400:
-            $ref: "#/components/responses/BadRequest"
+            $ref: "#/components/responses/BadRequestBag"
           500:
             $ref: "#/components/responses/InternalServerErrorCaveats"
         
