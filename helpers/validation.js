@@ -38,7 +38,7 @@ module.exports = {
             } else { 
                 errorBag.push("UUID contains illegal characters. Only use the following characters:\n- [a-z]\n- [A-Z]\n- [0-9]\n- -")
             }
-            throw new generateError(400, "Bad Request", "UUID is invalid", errorBag)
+            throw generateError(400, "Bad Request", "UUID is invalid", errorBag)
         }
     },
 
