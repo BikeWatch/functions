@@ -1,17 +1,12 @@
-const { generateError } = require("../helpers/error");
-const { generateResponse, generateDataResponse } = require("../helpers/response");
+const { generateError } = require("../helpers/error")
+const { generateResponse, generateDataResponse } = require("../helpers/response")
 
 module.exports = async function (context, req) {
-    context.log('Trigger "MaxAngle" activated!');
+    context.log(`Trigger "AvgElevation" activated!`)
     try {
         inputValidation(req.query)
-        
-        const cosmosResult = context.bindings.inputDocument[0]
-        let value = (Object.keys(cosmosResult).length > 0, cosmosResult.pitch > cosmosResult.roll)
-            ? cosmosResult.pitch
-            : cosmosResult.roll
-    
-        context.res = generateDataResponse(200, value || 0)
+        const cosmosResult = context.bindings.inputDocument[0].height || 0
+        context.res = generateDataResponse(200, cosmosResult || 0)
     } catch (err) {
         context.res = generateResponse(err.code, err.keyword, err.message, err.bag)
     }

@@ -36,7 +36,7 @@ paths:
           - Data-Out
         summary: Get calculated angle value
         description: "Returns a singular value that is calculated by calling this endpoint." 
-        operationId: maxAngle
+        operationId: calcAngle
         parameters:
           - $ref: "#/components/parameters/Mode"
           - $ref: "#/components/parameters/UUID"
@@ -52,10 +52,34 @@ paths:
           412:
             $ref: "#/components/responses/PreconditionFailed"
           400:
-            $ref: "#/components/responses/BadRequest"
+            $ref: "#/components/responses/BadRequestBag"
           500:
             $ref: "#/components/responses/InternalServerErrorCaveats"
-        
+  /Elevation/{mode}:
+    get:
+      tags:
+        - Data-Out
+      summary: Get calculated elevation value
+      description: "Returns a singular value that is calculated by calling this endpoint." 
+      operationId: calcElevation
+      parameters:
+        - $ref: "#/components/parameters/Mode"
+        - $ref: "#/components/parameters/UUID"
+        - $ref: "#/components/parameters/FromDate"
+        - $ref: "#/components/parameters/ToDate"
+      responses:
+        200:
+          description: OK
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/DataIntegerResponse"
+        412:
+          $ref: "#/components/responses/PreconditionFailed"
+        400:
+          $ref: "#/components/responses/BadRequestBag"
+        500:
+          $ref: "#/components/responses/InternalServerErrorCaveats"
 
 components:
   requestBodies:
