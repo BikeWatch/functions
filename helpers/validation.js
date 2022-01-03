@@ -35,6 +35,8 @@ module.exports = {
             let errorBag = []
             if (target.includes(" ")) {
                 errorBag.push("UUID contains spaces. UUID can only contain [a-z], [A-Z], [0-9] and -")
+            } else if(target.length !== 11) {
+                errorBag.push("UUID consist out of 4 2-letter groups, separated by -. For example: AA-11-B1-2C")
             } else { 
                 errorBag.push("UUID contains illegal characters. Only use the following characters:\n- [a-z]\n- [A-Z]\n- [0-9]\n- -")
             }
