@@ -80,6 +80,29 @@ paths:
           $ref: "#/components/responses/BadRequestBag"
         500:
           $ref: "#/components/responses/InternalServerErrorCaveats"
+  /Distance:
+    get:
+      tags:
+        - Data-Out
+      summary: Get total distance value
+      description: "Returns a value that represents the total distance that a user has travelled between 2 set points"
+      parameters:
+        - $ref: "#/components/parameters/UUID"
+        - $ref: "#/components/parameters/FromDate"
+        - $ref: "#/components/parameters/ToDate"
+      responses:
+        200:
+          description: OK
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/DataIntegerResponse"
+        412:
+          $ref: "#/components/responses/PreconditionFailed"
+        400:
+          $ref: "#/components/responses/BadRequestBag"
+        500:
+          $ref: "#/components/responses/InternalServerErrorCaveats"
 
 components:
   requestBodies:
@@ -218,7 +241,7 @@ components:
     DateTime:
       description: A DateTime string, in ISO format
       type: string
-      format: datetime
+      format: dateTime
       example: "2022-01-28T10:13:00Z"
     Pitch:
       description: The pitch of the device, measured in degrees.
@@ -270,7 +293,7 @@ components:
     InternalServerError:
       description: "Internal server error. \n \n Azure will just return nothing and because it's handled by the underlying C# framework, we cannot catch & adjust the response of this. ¯\\\_(ツ)\_/¯. Keep this in mind"
     InternalServerErrorCaveats:
-      description: "Internal Server Error. \n \n **Note:** Because Azure functions, written in JavaScript, cannot catch any extension binding parameters, it is **impossible** to give a fitting error message. This can appear when:\n * The UUID is non-existant and causes Cosmos DB to be unable to reach the associated container"
+      description: "Internal Server Error. \n \n **Note:** Because Azure functions, written in JavaScript, cannot catch any extension binding parameters, it is **impossible** to give a fitting error message. This can appear when:\n * The UUID is non-existant and causes Cosmos DB to be unable to reach the associated container. \n * One of the mandatory parameters is missing."
   parameters:
     # Path Parameters
     Mode:
