@@ -2,7 +2,7 @@ const { generateError } = require("../helpers/error")
 const { generateResponse, generateDataResponse } = require("../helpers/response")
 
 module.exports = async function (context, req) {
-    context.log(`Trigger "MaxElevation" activated!`)
+    context.log(`Trigger "AvgElevation" activated!`)
     try {
         inputValidation(req.query)
         const cosmosResult = context.bindings.inputDocument[0].height || 0
