@@ -1,0 +1,28 @@
+{
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "get"
+      ],
+      "route": "Elevation/Max"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "type": "cosmosDB",
+      "direction": "in",
+      "name": "inputDocument",
+      "databaseName": "telemetric",
+      "collectionName": "{uuid}",
+      "connectionStringSetting": "COSMOS_CONNECTION_URI",
+      "sqlQuery": "SELECT MAX(c.alt) as height FROM c WHERE ({to} > c.dateTime) AND (c.dateTime > {from})"
+    }
+  ]
+}
