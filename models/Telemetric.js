@@ -18,6 +18,7 @@ function mapTelemetric(telemetric) {
             pitch: entry.pitch,
             lat: entry.lat,
             long: entry.long,
+            alt: entry.alt,
             speed: entry.speed,
             dateTime: dateTime.toISOString()
         }
