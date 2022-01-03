@@ -40,5 +40,18 @@ module.exports = {
             }
             throw new generateError(400, "Bad Request", "UUID is invalid", errorBag)
         }
+    },
+
+    inputValidation: (uuid, from, to) => { 
+        if (!from || !uuid || !to) {
+            let errorbag = []
+            (!query.from) ? errorbag.push('The query parameter "from" is missing.') : undefined
+            (!query.uuid) ? errorbag.push('The query parameter "uuid" is missing') : undefined
+            (!query.to) ? errorbag.push('The query parameter "to" is missing') : undefined
+            throw generateError(400, "Bad Request", "One or multiple of the required parameters are missing.", errorbag)
+        }
+        if (Date.parse(from) >= Date.parse(to)) {
+            throw generateError(412, "Precondition Failed", "The 'from' date is greater then the 'to' date.", ["This will result resulting in a bug in the space-time paradox. 🌌", "Have fun, space cowboy. 🤠"])
+        }
     }
 }
