@@ -1,0 +1,27 @@
+{
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "req",
+      "methods": [
+        "get"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "type": "cosmosDB",
+      "direction": "in",
+      "name": "inputDocument",
+      "databaseName": "telemetric",
+      "collectionName": "{uuid}",
+      "connectionStringSetting": "COSMOS_CONNECTION_URI",
+      "sqlQuery": "SELECT c.lat, c.long FROM c  WHERE ({to} > c.dateTime) AND (c.dateTime > {from}) ORDER BY c.dateTime"
+    }
+  ]
+}
