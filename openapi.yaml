@@ -14,6 +14,8 @@ tags:
   description: All endpoints relating to consuming & editing data
 - name: Data-Out
   description: All endpoints relating to reading data
+- name: Data-Continuous
+  description: All endpoints that returns a continuous stream of data
 paths:
   /StoreTelemetric:
     post:
@@ -128,6 +130,32 @@ paths:
           $ref: "#/components/responses/BadRequestBag"
         500:
           $ref: "#/components/responses/InternalServerErrorCaveats"
+  /continuous/Speed:
+    get:
+      tags:
+        - Data-Continuous
+      summary: Returns timestamped speed data
+      description: "Returns an array of speed entries, each with their according timestamp. The range & interval can be customized with the use of query parameters"
+      operationId: continuousSpeed
+      parameters:
+        - $ref: "#/components/parameters/UUID"
+        - $ref: "#/components/parameters/FromDate"
+        - $ref: "#/components/parameters/ToDate"
+        - $ref: "#/components/parameters/Interval"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContinuousSpeedResponse"
+        412:
+          $ref: "#/components/responses/PreconditionFailed"
+        400:
+          $ref: "#/components/responses/BadRequestBag"
+        500:
+          $ref: "#/components/responses/InternalServerErrorCaveats"
+    
 components:
   requestBodies:
     TelemetricIn:
@@ -214,11 +242,16 @@ components:
         bag:
           - "At entry 1, the key 'date' is missing"
           - "At entry 2, the key 'alt' is missing"
-    DataIntegerResponse:
-      description: The standard body received when a call returns a simple integer data type
-      type: number
-      format: float
-      example: 22.5
+    ContinuousSpeedResponse:
+      description: The standard body response when requesting a continuous stream of timestamped speed entries
+      type: array
+      items:
+        type: object
+        properties:
+          speed:
+            $ref: "#/components/schemas/Speed"
+          dateTime:
+            $ref: "#/components/schemas/DateTime"
   
     # Atomic schemas
     UUID:
@@ -276,6 +309,17 @@ components:
       description: "The mode that the data should be calculated with: \n * `Max`: Retrieve the maximum value\n * `Avg`: Retrieve the average value"
       type: string
       enum: [Max, Avg]
+    IntervalInteger:
+      description: The interval, expressed in seconds
+      type: integer
+      format: int32
+      minimum: 1
+      example: 3
+    DataIntegerResponse:
+      description: The standard body received when a call returns a simple integer data type
+      type: number
+      format: float
+      example: 22.5
     
   responses:
     Created:
@@ -348,3 +392,10 @@ components:
         $ref: "#/components/schemas/DateTime"
       required: true
       description: The latest date that may appear, formatted in ISO style.
+    Interval:
+      in: query
+      name: interval
+      schema:
+        $ref: "#/components/schemas/IntervalInteger"
+      required: true
+      description: The time interval the date should adhere to, expressed in seconds
