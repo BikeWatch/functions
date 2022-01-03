@@ -30,6 +30,29 @@ paths:
           $ref: "#/components/responses/BadRequestBag"
         500:
           $ref: "#/components/responses/InternalServerError"
+  /Distance:
+    get:
+      tags:
+        - Data-Out
+      summary: Get total distance value
+      description: "Returns a value that represents the total distance that a user has travelled between 2 set points"
+      parameters:
+        - $ref: "#/components/parameters/UUID"
+        - $ref: "#/components/parameters/FromDate"
+        - $ref: "#/components/parameters/ToDate"
+      responses:
+        200:
+          description: OK
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                $ref: "#/components/schemas/DataIntegerResponse"
+        412:
+          $ref: "#/components/responses/PreconditionFailed"
+        400:
+          $ref: "#/components/responses/BadRequestBag"
+        500:
+          $ref: "#/components/responses/InternalServerErrorCaveats"
   /Angle/{mode}:
       get:
         tags:
@@ -80,13 +103,15 @@ paths:
           $ref: "#/components/responses/BadRequestBag"
         500:
           $ref: "#/components/responses/InternalServerErrorCaveats"
-  /Distance:
+  /Speed/{mode}:
     get:
       tags:
         - Data-Out
-      summary: Get total distance value
-      description: "Returns a value that represents the total distance that a user has travelled between 2 set points"
+      summary: Get calculated elevation value
+      description: "Returns a singular value that is calculated by calling this endpoint." 
+      operationId: calcSpeed
       parameters:
+        - $ref: "#/components/parameters/Mode"
         - $ref: "#/components/parameters/UUID"
         - $ref: "#/components/parameters/FromDate"
         - $ref: "#/components/parameters/ToDate"
@@ -103,7 +128,6 @@ paths:
           $ref: "#/components/responses/BadRequestBag"
         500:
           $ref: "#/components/responses/InternalServerErrorCaveats"
-
 components:
   requestBodies:
     TelemetricIn:
