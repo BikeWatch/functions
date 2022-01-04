@@ -1,4 +1,4 @@
-const { dateSplitter, timeSplitter } = require("../helpers/splitter");
+const { dateSplitter, timeSplitter } = require("../helpers/trim");
 
 function mapTelemetric(telemetric) {
     return telemetric.map(entry => { 
