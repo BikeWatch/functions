@@ -22,7 +22,7 @@
       "databaseName": "telemetric",
       "collectionName": "{uuid}",
       "connectionStringSetting": "COSMOS_CONNECTION_URI",
-      "sqlQuery": "SELECT MAX(c.speed) as speed FROM c WHERE ({to} > c.dateTime) AND (c.dateTime > {from})"
+      "sqlQuery": "SELECT MAX(c.speed) as speed FROM c WHERE IS_NULL(c.speed)=false AND ({to} > c.dateTime) AND (c.dateTime > {from})"
     }
   ]
 }

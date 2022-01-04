@@ -1,5 +1,5 @@
-const { generateResponse, generateDataResponse } = require("../helpers/response");
-const { inputValidation } = require("../helpers/validation");
+const { generateResponse, generateDataResponse } = require("../_shared/helpers/response");
+const { inputValidation } = require("../_shared/helpers/validation");
 
 module.exports = async function (context, req) {
     try {
