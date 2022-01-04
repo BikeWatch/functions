@@ -1,7 +1,7 @@
-const { generateError} = require("../helpers/error");
-const Telemetric = require("../models/Telemetric");
-const { arrayIntegrity, keyIntegrity, uuidIntegrity } = require("../helpers/validation");
-const { generateResponse } = require("../helpers/response");
+const { generateError} = require("../_shared/helpers/error");
+const Telemetric = require("../_shared/models/Telemetric");
+const { arrayIntegrity, keyIntegrity, uuidIntegrity } = require("../_shared/helpers/validation");
+const { generateResponse } = require("../_shared/helpers/response");
 
 
 module.exports = async function (context, req) {

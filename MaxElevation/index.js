@@ -1,5 +1,5 @@
-const { inputValidation } = require("../helpers/validation");
-const { generateResponse, generateDataResponse } = require("../helpers/response")
+const { inputValidation } = require("../_shared/helpers/validation");
+const { generateResponse, generateDataResponse } = require("../_shared/helpers/response")
 
 module.exports = async function (context, req) {
     context.log(`Trigger "MaxElevation" activated!`)

@@ -1,6 +1,6 @@
-const { generateResponse, generateDataResponse } = require("../helpers/response");
-const { trimByInterval } = require("../helpers/trim");
-const { inputIntervalValidation } = require("../helpers/validation");
+const { generateResponse, generateDataResponse } = require("../_shared/helpers/response");
+const { trimByInterval } = require("../_shared/helpers/trim");
+const { inputIntervalValidation } = require("../_shared/helpers/validation");
 
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
