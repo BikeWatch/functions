@@ -1,4 +1,4 @@
-const { generateResponse, generateDataResponse } = require("../helpers/response");
+const { generateDataResponse } = require("../helpers/response");
 const { trimByInterval } = require("../helpers/trim");
 const { inputIntervalValidation } = require("../helpers/validation");
 

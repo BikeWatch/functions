@@ -8,7 +8,7 @@
       "methods": [
         "get"
       ],
-      "route": "Speed/Avg"
+      "route": "continuous/Distance"
     },
     {
       "type": "http",
@@ -22,7 +22,7 @@
       "databaseName": "telemetric",
       "collectionName": "{uuid}",
       "connectionStringSetting": "COSMOS_CONNECTION_URI",
-      "sqlQuery": "SELECT AVG(c.speed) as speed FROM c WHERE ({to} > c.dateTime) AND (c.dateTime > {from})"
+      "sqlQuery": "SELECT c.lat, c.long, c.dateTime FROM c WHERE (IS_NULL(c.lat)=false OR IS_NULL(c.long)=false) AND ({to} > c.dateTime) AND (c.dateTime > {from}) ORDER BY c.dateTime DESC"
     }
   ]
 }

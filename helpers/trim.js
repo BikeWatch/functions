@@ -16,5 +16,17 @@ module.exports = {
             sec: units[2],
             milsec: units[3]
         }
+    },
+
+    trimByInterval: (target, interval) => {
+        let result = [target.shift()]
+        target.forEach(entry => {
+            const tRef = new Date(result.at(-1).dateTime)
+            const tEntry = new Date(entry.dateTime)
+            if (Math.abs((tRef.getTime() - tEntry.getTime()) / 1000) >= interval) {
+                result.push(entry)
+            }
+        })
+        return result
     }
 }

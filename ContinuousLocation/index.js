@@ -1,4 +1,5 @@
-const { generateResponse, generateDataResponse } = require("../helpers/response");
+const { generateError } = require("../helpers/error");
+const { generateDataResponse } = require("../helpers/response");
 const { trimByInterval } = require("../helpers/trim");
 const { inputIntervalValidation } = require("../helpers/validation");
 
@@ -12,6 +13,6 @@ module.exports = async function (context, req) {
             : []
         )
     } catch (err) {
-        context.res = generateResponse(err.code, err.keyword, err.message, err.bag)
+        context.res = generateError(err.code, err.keyword, err.message, err.bag)
     }
 }

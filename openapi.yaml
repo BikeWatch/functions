@@ -130,25 +130,29 @@ paths:
           $ref: "#/components/responses/BadRequestBag"
         500:
           $ref: "#/components/responses/InternalServerErrorCaveats"
-  /continuous/Speed:
+  /continuous/{resource}:
     get:
       tags:
         - Data-Continuous
-      summary: Returns timestamped speed data
-      description: "Returns an array of speed entries, each with their according timestamp. The range & interval can be customized with the use of query parameters"
+      summary: Returns timestamped resource data
+      description: "Returns an array of resource entries, each with their according timestamp. The range & interval can be customized with the use of query parameters"
       operationId: continuousSpeed
       parameters:
+        - $ref: "#/components/parameters/ResourceMode"
         - $ref: "#/components/parameters/UUID"
         - $ref: "#/components/parameters/FromDate"
         - $ref: "#/components/parameters/ToDate"
         - $ref: "#/components/parameters/Interval"
       responses:
         200:
-          description: OK
+          description: "OK \n \n *Note that the displayed value is just 1 example. Every response has the same structure, but might have other keywords. Click on the 'Schema' section to see all possible structures*" 
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ContinuousSpeedResponse"
+                oneOf:
+                  - $ref: "#/components/schemas/ContinuousSpeed"
+                  - $ref: "#/components/schemas/ContinuousElevation"
+                  - $ref: "#/components/schemas/ContinuousLocation"
         412:
           $ref: "#/components/responses/PreconditionFailed"
         400:
@@ -242,7 +246,7 @@ components:
         bag:
           - "At entry 1, the key 'date' is missing"
           - "At entry 2, the key 'alt' is missing"
-    ContinuousSpeedResponse:
+    ContinuousSpeed:
       description: The standard body response when requesting a continuous stream of timestamped speed entries
       type: array
       items:
@@ -250,6 +254,28 @@ components:
         properties:
           speed:
             $ref: "#/components/schemas/Speed"
+          dateTime:
+            $ref: "#/components/schemas/DateTime"
+    ContinuousLocation:
+      description: The standard body response when requesting a continuous stream of timestamped location entries
+      type: array
+      items:
+        type: object
+        properties:
+          long:
+            $ref: "#/components/schemas/Longitude"
+          lat:
+            $ref: "#/components/schemas/Latitude"
+          dateTime:
+            $ref: "#/components/schemas/DateTime"
+    ContinuousElevation:
+      description: The standard body response when requesting a continuous stream of timestamped elevation entries
+      type: array
+      items:
+        type: object
+        properties:
+          alt:
+            $ref: "#/components/schemas/Altitude"
           dateTime:
             $ref: "#/components/schemas/DateTime"
   
@@ -280,7 +306,7 @@ components:
       format: float
       example: 2.884949
     Altitude:
-      description: The altitude of the device, as used in the **projected coordinate reference system (PCRS)**.
+      description: The altitude of the device, expressed in meters.
       type: number
       format: float
       example: 8.20
@@ -320,6 +346,10 @@ components:
       type: number
       format: float
       example: 22.5
+    ResourceTarget:
+      description: Keyword that specifies which resource should be returned
+      type: string
+      enum: [Speed, Location, Elevation]
     
   responses:
     Created:
@@ -399,3 +429,10 @@ components:
         $ref: "#/components/schemas/IntervalInteger"
       required: true
       description: The time interval the date should adhere to, expressed in seconds
+    ResourceMode:
+      in: path
+      name: resource
+      schema:
+        $ref: "#/components/schemas/ResourceTarget"
+      required: true
+      description: The resource that should be requested
