@@ -22,7 +22,7 @@
       "databaseName": "telemetric",
       "collectionName": "{uuid}",
       "connectionStringSetting": "COSMOS_CONNECTION_URI",
-      "sqlQuery": "SELECT c.speed, c.dateTime FROM c WHERE ({to} > c.dateTime) AND (c.dateTime > {from}) ORDER BY c.dateTime DESC"
+      "sqlQuery": "SELECT c.speed, c.dateTime FROM c WHERE IS_NULL(c.speed)=false AND ({to} > c.dateTime) AND (c.dateTime > {from}) ORDER BY c.dateTime DESC"
     }
   ]
 }
