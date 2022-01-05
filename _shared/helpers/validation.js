@@ -43,7 +43,7 @@ function uuidIntegrity(target) {
     }
 }
 
-function inputValidation(uuid, from, to, errorbag = []) {
+function queryValidation(uuid, from, to, errorbag = []) {
     if (!from || !uuid || !to) {
         (!query.from) ? errorbag.push('The query parameter "from" is missing.') : undefined
         (!query.uuid) ? errorbag.push('The query parameter "uuid" is missing') : undefined
@@ -57,20 +57,20 @@ function inputValidation(uuid, from, to, errorbag = []) {
     }
 }
 
-function inputIntervalValidation(uuid, from, to, interval, errorbag = []) { 
+function queryIntervalValidation(uuid, from, to, interval, errorbag = []) { 
     if (!interval) {
         errorbag.push('The query parameter "interval" is missing')
     }
     if (!Number.isInteger(interval) && interval < 1) {
         throw generateError(412, "Precondition Failed", "The interval is smaller then 1. Only integer greater or equal to 1 are accepted", ["You can't split time like a block of cheese.", "Maybe the time warden can help you with that"])
     }
-    inputValidation(uuid, from, to, errorbag)
+    queryValidation(uuid, from, to, errorbag)
 }
 
 module.exports = {
     arrayIntegrity,
     keyIntegrity,
     uuidIntegrity,
-    inputValidation,
-    inputIntervalValidation
+    queryValidation,
+    queryIntervalValidation
 }

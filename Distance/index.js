@@ -1,10 +1,10 @@
 const { generateResponse, generateDataResponse } = require("../_shared/helpers/response");
-const { inputValidation } = require("../_shared/helpers/validation");
+const { queryValidation } = require("../_shared/helpers/validation");
 
 module.exports = async function (context, req) {
     try {
         context.log('JavaScript HTTP trigger function processed a request.');
-        inputValidation(req.query.uuid, req.query.from, req.query.to)
+        queryValidation(req.query.uuid, req.query.from, req.query.to)
         let cosmosResult = context.bindings.inputDocument
         context.res = generateDataResponse(200, (cosmosResult.length >= 2)
             ? calculateGridDistance(cosmosResult)

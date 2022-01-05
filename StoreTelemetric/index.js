@@ -7,7 +7,7 @@ const { generateResponse } = require("../_shared/helpers/response");
 module.exports = async function (context, req) {
     context.log('HTTP function "StoreTelemetric" triggered!');
     try {
-        inputValidation(req.body)
+        queryValidation(req.body)
         const data = new Telemetric(req.body.uuid, req.body.telemetric)
         context.bindings.outputDocument = JSON.stringify(data.telemetric)
 
@@ -19,7 +19,7 @@ module.exports = async function (context, req) {
     }
 }
 
-function inputValidation(body) { 
+function queryValidation(body) { 
     const neededKeys = ['roll', 'pitch', 'lat', 'long', 'alt', 'date', 'time', 'speed']
 
     if (!body.uuid || !body.telemetric) {
