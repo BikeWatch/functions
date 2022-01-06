@@ -8,7 +8,7 @@
       "methods": [
         "get"
       ],
-      "route": "continuous/Distance"
+      "route": "continuous/Location"
     },
     {
       "type": "http",
